@@ -1,4 +1,3 @@
-##### ##### ##### #####
 ##### Environment #### 
 PHP Version >= 8.0
 
@@ -6,7 +5,6 @@ MySQL
 
 Composer >= 2.3
 
-#### #### #####
 
 #### Setup Steps ####
 Git pull
@@ -33,8 +31,6 @@ Run scheduler for testing on local: php artisan temperature:fetch
 Setup corn job with follwoing code
 
 * * * * * cd /path/to/your/project && php artisan schedule:run >> /dev/null 2>&1
-
-##### ##### ##### #####
 
 
 ###### #### #### ####  #### #####
