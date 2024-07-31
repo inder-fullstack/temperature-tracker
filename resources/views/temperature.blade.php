@@ -1,7 +1,7 @@
 @include('header.header')
 
 <div class="container">
-    <h1>Temperature in {{ $city->name }}</h1>
+    <h1>Temperature {{ !is_null($city) ? "in ".$city->name : "" }}</h1>
     <canvas id="temperatureChart"></canvas>
     <!-- Add this debugging section -->
     <div id="debug" style="display: none;">

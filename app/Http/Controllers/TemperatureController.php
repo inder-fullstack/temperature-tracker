@@ -2,26 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\City;
-use App\Models\TemperatureRecord;
 use Illuminate\Http\Request;
+use App\Repositories\TemperatureRepository;
 
 class TemperatureController extends Controller
 {
-    public function index()
+    protected $temperatureRepository;
+
+    public function __construct(TemperatureRepository $temperatureRepository)
     {
-        $city = City::where('name', 'Palma')->first();
-        $temperatures = TemperatureRecord::where('city_id', $city->id)
-            ->orderBy('recorded_at')
-            ->get()
-            ->map(function ($record) {
-                return [
-                    'x' => $record->recorded_at->format('Y-m-d H:i:s'),
-                    'y' => $record->temperature,
-                ];
-            });
-        // Add this debugging line
-        \Log::info('Temperature data:', $temperatures->toArray());
+        $this->temperatureRepository = $temperatureRepository;
+    }
+
+    public function index(Request $request)
+    {
+        $cityName = $request->input('city', 'Palma');
+        $city = $this->temperatureRepository->getCityByName($cityName);
+
+        $temperatures = collect();
+        if (!is_null($city)) {
+            $temperatures = $this->temperatureRepository->getTemperaturesByCityId($city->id);
+            \Log::info('Temperature data:', $temperatures->toArray());
+        }
 
         return view('temperature', compact('temperatures', 'city'));
     }
